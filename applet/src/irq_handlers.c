@@ -1509,7 +1509,11 @@ void SysTick_Handler(void)
       }
    }
 #endif
-
+// kd4z nosleep hack for version 5 hardware until unsleep can be hooked
+if ( *((uint16_t*)MD380_ADDR_DMR_POWER_SAVE_COUNTDOWN) < 20 )
+{
+  *((uint16_t*)MD380_ADDR_DMR_POWER_SAVE_COUNTDOWN) |= 0x80 + 0x40;
+}
   if( boot_flags & BOOT_FLAG_OPEN_FOR_BUSINESS )
    { // 2017-05-14 : Removed the brightness 'ramp-up' test. 
      //   The 9 intensity levels can now be tested in app_menu.c in inc/dec edit mode.
